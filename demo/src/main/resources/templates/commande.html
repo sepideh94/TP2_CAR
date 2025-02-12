@@ -4,8 +4,12 @@
     <title>Bienvenue</title>
 </head>
 <body>
-    <h1>Bienvenue, <span th:text="${firstName}"></span> !</h1>
+    <!-- Vérifie si un utilisateur est connecté -->
+    <p th:if="${session.user}" style="color: green;">
+        Connecté en tant que : <span th:text="${session.user.firstName}"></span>
+        <a href="/store/logout" style="margin-left: 10px; color: red;">Se déconnecter</a>
+    </p>
+    <h1>Bienvenue, <span th:text="${session.user.firstName}"></span> !</h1>
 
-    <a href="/store/home">Logout</a> <!-- Lien pour retourner à la page d'accueil -->
 </body>
 </html>
