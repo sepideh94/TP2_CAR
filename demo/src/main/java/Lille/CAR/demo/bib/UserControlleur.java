@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
+
 
 @Controller
 @RequestMapping("/store")
@@ -14,6 +16,7 @@ public class UserControlleur {
 
     @Autowired
     private UserItf service;
+    
 
     @GetMapping("/home")
     public ModelAndView home(@RequestParam(value = "error", required = false) String error) {
@@ -52,7 +55,44 @@ public class UserControlleur {
     }
     
     @GetMapping("/commande")
-    public ModelAndView commandPage() {
-        return new ModelAndView("/commande");
+    public ModelAndView commandPage(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return new ModelAndView("redirect:/store/home");
+        }
+        ModelAndView modelAndView = new ModelAndView("commande");
+        
+        List<Order> orders = service.getUserOrders(user);
+        
+        modelAndView.addObject("orders", orders);
+        return modelAndView;
     }
+ 
+    @PostMapping("/commande/add")
+    public RedirectView placeOrder(HttpSession session, 
+    		                       @RequestParam String title) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return new RedirectView("/store/home");
+        }
+        service.createOrder(user, title);
+        return new RedirectView("/store/commande");
+    }
+    
+    @PostMapping("/article")
+    public RedirectView addArticle(HttpSession session, 
+                                   @RequestParam Long orderId, 
+                                   @RequestParam String name, 
+                                   @RequestParam int quantity,
+                                   @RequestParam double price) {
+    	
+    User user = (User) session.getAttribute("user");
+    Order order = service.getOrderById(orderId);
+
+    service.addArticle(order, name, quantity, price);
+    return new RedirectView("/store/commande");
+    }
+
+    
+
 }
