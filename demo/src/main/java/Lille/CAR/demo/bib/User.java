@@ -1,5 +1,8 @@
 package Lille.CAR.demo.bib;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -10,9 +13,15 @@ public class User {
     @GeneratedValue
     private Long id;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Order> orders = new ArrayList<>();
+    
+    public List<Order> getOrders(){
+    	return orders;
+    }
+    
     @Column(name = "email", unique = true, nullable = false) 
     private String email;
-
     private String password;
     private String firstName;
     private String lastName;

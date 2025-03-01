@@ -1,16 +1,13 @@
 <body>
 <h1>Welcome</h1>
 
-<!-- Affichage du message de bienvenue si l'utilisateur est connecté -->
 <p th:if="${session.user}" style="color: green;">
     Bonjour, <span th:text="${session.user.firstName}"></span> !
     <a href="/store/logout">Se déconnecter</a>
 </p>
 
-<!-- Message d'erreur -->
 <p th:if="${error}" style="color: red;" th:text="${error}"></p>
 
-<!-- Formulaire de connexion (affiché uniquement si l'utilisateur n'est pas connecté) -->
 <div th:if="${session.user == null}">
     <form action="/store/login" method="post">
         Email : <input name="email" required/><br>

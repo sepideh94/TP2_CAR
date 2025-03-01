@@ -3,29 +3,29 @@ package Lille.CAR.demo.bib;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "articles")  
 public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private int quantity;
-    private double price;
-
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
-
+    private String name;
+    private int quantity;
+    private double price;
+    
     public Article() {}
 
     public Article(Order order, String name, int quantity, double price) {
-        this.name = name;
         this.order = order;
+        this.name = name;
         this.quantity = quantity;
         this.price = price;
     }
-
+    
 	public Long getId() {
 		return id;
 	}
@@ -65,6 +65,4 @@ public class Article {
 	public void setOrder(Order order) {
 		this.order = order;
 	}
-
-    
 }

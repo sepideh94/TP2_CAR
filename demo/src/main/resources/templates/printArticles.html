@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Articles - Print</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Articles in Order: <span th:text="${order.title}"></span></h2>
+<h3>Client: <span th:text="${session.user.firstName}"></span></h3>
+
+<div th:if="${articles != null and not #lists.isEmpty(articles)}">
+    <table>
+        <thead>
+            <tr>
+                <th>Article Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="article : ${articles}">
+                <td th:text="${article.name}"></td>
+                <td th:text="${article.quantity}"></td>
+                <td th:text="${article.price}"></td>
+                <td th:text="${article.quantity * article.price}"></td> 
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<p th:if="${articles == null or #lists.isEmpty(articles)}">No articles in this order</p>
+
+<hr>
+
+<h3>Total Price: 
+    <span th:text="${grandTotal}"></span> 
+</h3>
+
+</body>
+</html>

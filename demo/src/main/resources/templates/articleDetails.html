@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+</head>
+<body>
+
+<p th:if="${session.user}">
+    Hello, <span th:text="${session.user.firstName}"></span> !
+    <a href="/store/logout">Log out</a>
+</p>
+
+<hr>
+
+<h2>Order Details</h2>
+<p>
+    <strong>Order Title:</strong> <span th:text="${order.title}"></span>
+</p>
+
+<hr>
+<h3>Articles in this Order:</h3>
+<div th:if="${articles != null and not #lists.isEmpty(articles)}">
+    <ul>
+        <li th:each="article : ${articles}">
+            <strong th:text="${article.name}"></strong> - 
+            <span th:text="${article.quantity}">Quantity</span> - 
+            <span th:text="${article.price}">Price</span>
+            <form th:action="@{/store/commande/{orderId}/deleteArticle(orderId=${order.id}, articleId=${article.id})}" method="post" style="display:inline;">
+                <input type="submit" value="Delete" />
+            </form>
+        </li>
+    </ul>
+</div>
+<p th:if="${articles == null or #lists.isEmpty(articles)}">No articles in this order</p>
+
+<hr>
+
+<a th:href="@{/store/commande/{orderId}/printArticles(orderId=${order.id})}">
+    <button>Print Articles</button>
+</a>
+
+<hr>
+<h2>Add an Article</h2>
+<form th:action="@{/store/commande/{orderId}/addArticle(orderId=${order.id})}" method="post">
+    <input type="hidden" name="orderId" th:value="${order.id}" />
+    Article Name: <input type="text" name="name" required/><br>
+    Quantity: <input type="number" name="quantity" required/><br>
+    Price: <input type="number" step="0.01" name="price" required/><br>
+    <input type="submit" value="Add this Article"/>
+</form>
+
+</body>
+</html>
