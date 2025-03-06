@@ -1,6 +1,8 @@
 <body>
 <h1>Welcome</h1>
 
+<p th:if="${param.success}" style="color: green;">Sign up successful!</p>
+
 <p th:if="${session.user}" style="color: green;">
     Bonjour, <span th:text="${session.user.firstName}"></span> !
     <a href="/store/logout">Se déconnecter</a>

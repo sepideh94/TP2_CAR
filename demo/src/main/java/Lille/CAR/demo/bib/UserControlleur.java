@@ -29,7 +29,7 @@ public class UserControlleur {
     public ModelAndView home(@RequestParam(value = "error", required = false) String error) {
         ModelAndView modelAndView = new ModelAndView("home");
         if (error != null) {
-            modelAndView.addObject("error", "Email ou mot de passe incorrect!");
+            modelAndView.addObject("error", "Email or password incorrect!");
         }
         return modelAndView;
     }
@@ -41,7 +41,7 @@ public class UserControlleur {
                                @RequestParam String lastName) {
         User newUser = new User(email, password, firstName, lastName);
         userService.register(newUser);
-        return new RedirectView("/store/home");
+        return new RedirectView("/store/home?success=true");
         
     }
 
@@ -86,6 +86,7 @@ public class UserControlleur {
         return new RedirectView("/store/commande");
     }
     
+    
     @GetMapping("/commande/{id}")
     public ModelAndView orderDetails(@PathVariable Long id, HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -94,7 +95,7 @@ public class UserControlleur {
         }
 
         Order order = orderService.getOrderById(id);
-        if (order == null) {
+        if (order == null || !order.getUser().getId().equals(user.getId())) {
             return new ModelAndView("redirect:/store/commande");
         }
 
@@ -106,6 +107,7 @@ public class UserControlleur {
 
         return modelAndView;
     }
+
     
     @PostMapping("/commande/{orderId}/addArticle")
     public String addArticle(@PathVariable Long orderId,
@@ -132,10 +134,10 @@ public class UserControlleur {
         if (user == null) {
             return new ModelAndView("redirect:/store/home");
         }
-
+        
         Order order = orderService.getOrderById(orderId);
-        if (order == null) {
-            return new ModelAndView("redirect:/store/commande");
+        if (order == null || !order.getUser().getId().equals(user.getId())) {
+            return new ModelAndView("redirect:/store/commande"); 
         }
 
         List<Article> articles = order.getArticles();
