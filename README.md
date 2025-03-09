@@ -1,5 +1,4 @@
 Store Management - Spring Boot Application
-Ce projet est une application web développée avec Spring Boot pour la gestion des commandes d’un magasin. Il permet aux clients de s’inscrire, passer des commandes et gérer leurs articles.
 
 ## Fonctionnalités
   Gestion des clients
@@ -18,6 +17,8 @@ Accès aux commandes restreint aux clients connectés
 
 Accéder à l’application
 http://localhost:8080/store/home
+
+Démonstration : https://youtu.be/PLN4sMvV6ww
 
 Auteurs
 Sepideh Soleimani
